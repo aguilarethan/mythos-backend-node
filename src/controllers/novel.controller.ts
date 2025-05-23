@@ -1,35 +1,21 @@
 import { Request, Response } from 'express';
-import { NovelModel } from '../models/novel.model';
+import * as novelService from '../services/novel.service';
 
 export const getNovelById = async (req: Request, res: Response) => { 
-  const { id } = req.params;
-
   try {
-    const foundedNovel = await NovelModel.findById(id);
-    if (!foundedNovel) {
-      res.status(404).json({ message: 'No se encontró la novela' });
-    }
-
-    res.json(foundedNovel);
-  } catch (error) { 
+    const novel = await novelService.findNovelById(req.params.id);
+    if (!novel) res.status(404).json({ message: 'No se encontró la novela' });
+    res.json(novel);
+  } catch (error) {
     console.error('Error fetching novel:', error);
     res.status(500).json({ message: 'Ocurrió un error al intentar buscar la novela' });
   }
-
 }
 
-export const getNovelsByPartialTitleMatch = async (req: Request, res: Response) => {
-  const { title } = req.params;
-
+export const getNovelsByTitleMatch = async (req: Request, res: Response) => {
   try {
-    const foundNovels = await NovelModel.find({
-      title: { $regex: title, $options: 'i' } 
-    });
-
-    if (foundNovels.length === 0) {
-      res.status(404).json({ message: 'No se encontraron novelas con titulos coincidentes' });
-    }
-
+    const foundNovels = await novelService.findNovelsByTitleMatch(req.params.title);
+    if (foundNovels.length === 0) res.status(404).json({ message: 'No se encontraron novelas con titulos coincidentes' });
     res.json(foundNovels)
   } catch (error) {
     console.error('Error fetching novels:', error);
@@ -37,46 +23,31 @@ export const getNovelsByPartialTitleMatch = async (req: Request, res: Response) 
   }
 };
 
-export const createNovel = async (req: Request, res: Response) => {
-  const { writerAccountId, title, description, genres, tags, coverImage, bannerImage, status, createdAt } = req.body;
-
-  const newNovel = new NovelModel({
-    writerAccountId,
-    title,
-    description,
-    genres,
-    tags,
-    coverImage,
-    bannerImage,
-    status,
-    createdAt
-  });
-
+export const getNovelsByWriterAccountId = async (req: Request, res: Response) => {
   try {
-    const novelSaved = await newNovel.save();
-    res.json(novelSaved);
+    const foundNovels = await novelService.findNovelsByWriterAccountId(req.params.writerAccountId);
+    if (foundNovels.length === 0) res.status(404).json({ message: 'No se encontraron novelas para este escritor' });
+    res.json(foundNovels);
+  } catch (error) {
+    console.error('Error fetching novels:', error);
+    res.status(500).json({ message: 'Ocurrió un error al intentar buscar las novelas' });
+  }
+}
+
+export const createNovel = async (req: Request, res: Response) => {
+  try {
+    const novel = await novelService.saveNovel(req.body);
+    res.status(201).json(novel);
   } catch (error) {
     console.error('Error creating novel:', error);
     res.status(500).json({ message: 'Ocurrió un error al intentar crear la novela' });
   }
-
 };
 
 export const updateNovelById = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const { title, description, genres, tags, coverImage, bannerImage, status, createdAt } = req.body;
-
   try {
-    const updatedNovel = await NovelModel.findByIdAndUpdate(
-      id,
-      { title, description, genres, tags, coverImage, bannerImage, status, createdAt },
-      { new: true }
-    );
-
-    if (!updatedNovel) {
-      res.status(404).json({ message: 'No se encontró la novela' });
-    }
-
+    const updatedNovel = await novelService.findNovelByIdAndUpdate(req.params.id, req.body);
+    if (!updatedNovel) res.status(404).json({ message: 'No se encontró la novela' });
     res.json(updatedNovel);
   } catch (error) {
     console.error('Error updating novel:', error);
@@ -85,14 +56,9 @@ export const updateNovelById = async (req: Request, res: Response) => {
 };
 
 export const deleteNovelById = async (req: Request, res: Response) => {
-  const { id } = req.params;
-
   try {
-    const deletedNovel = await NovelModel.findByIdAndDelete(id);
-    if (!deletedNovel) {
-      res.status(404).json({ message: 'No se encontró la novela' });
-    }
-
+    const deletedNovel = await novelService.findNovelByIdAndDelete(req.params.id);
+    if (!deletedNovel) res.status(404).json({ message: 'No se encontró la novela' });
     res.json({ message: 'Novela eliminada correctamente' });
   } catch (error) {
     console.error('Error deleting novel:', error);

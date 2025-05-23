@@ -1,7 +1,6 @@
 import express from 'express';
 import morgan from 'morgan';
 
-
 import chapterRoutes from './routes/chapter.routes';
 import commentRoutes from './routes/comment.routes';
 import genreRoutes from './routes/genre.routes';
