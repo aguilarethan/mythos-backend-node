@@ -1,6 +1,5 @@
 import { NovelModel } from "../models/novel.model";
 import { INovel } from "../interfaces/novel.interface";
-import { writer } from "repl";
 
 export const findNovelById = async (id: string) => {
     return NovelModel.findById(id);

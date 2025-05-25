@@ -10,7 +10,7 @@ export const getNovelById = async (req: Request, res: Response) => {
     console.error('Error fetching novel:', error);
     res.status(500).json({ message: 'Ocurrió un error al intentar buscar la novela' });
   }
-}
+};
 
 export const getNovelsByTitleMatch = async (req: Request, res: Response) => {
   try {
@@ -32,7 +32,7 @@ export const getNovelsByWriterAccountId = async (req: Request, res: Response) =>
     console.error('Error fetching novels:', error);
     res.status(500).json({ message: 'Ocurrió un error al intentar buscar las novelas' });
   }
-}
+};
 
 export const createNovel = async (req: Request, res: Response) => {
   try {

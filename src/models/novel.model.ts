@@ -11,7 +11,7 @@ const novelSchema = new Schema<NovelDocument>({
     tags: { type: [String], default: [] },
     coverImage: { type: Buffer },
     bannerImage: { type: Buffer },
-    status: { type: String, enum: Object.values(NovelStatus), required: true },
+    status: { type: String, enum: Object.values(NovelStatus), default: NovelStatus.IN_PROGRESS, required: true },
 }, {
     timestamps: true,
     toJSON: {
