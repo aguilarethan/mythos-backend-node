@@ -16,8 +16,8 @@ export interface INovel {
     description: string;
     genres: (Types.ObjectId | IGenre)[];
     tags: string[];
-    coverImage?: Buffer;
-    bannerImage?: Buffer;
+    coverImage?: string;
+    bannerImage?: string;
     status: NovelStatus;
     createdAt?: Date;
     updatedAt?: Date;

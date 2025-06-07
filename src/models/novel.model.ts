@@ -5,12 +5,12 @@ export type NovelDocument = INovel & Document;
 
 const novelSchema = new Schema<NovelDocument>({
     writerAccountId: { type: String, required: true },
-    title: { type: String, required: true },
-    description: { type: String, required: true },
+    title: { type: String, trim: true, required: true },
+    description: { type: String, trim: true, required: true },
     genres: [{ type: Schema.Types.ObjectId, ref: 'Genre', required: true }],
     tags: { type: [String], default: [] },
-    coverImage: { type: Buffer },
-    bannerImage: { type: Buffer },
+    coverImage: { type: String },
+    bannerImage: { type: String },
     status: { type: String, enum: Object.values(NovelStatus), default: NovelStatus.IN_PROGRESS, required: true },
 }, {
     timestamps: true,
