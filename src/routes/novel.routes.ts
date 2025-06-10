@@ -14,15 +14,17 @@ import {
     createNovelSchema, 
     updateNovelSchema 
 } from '../schemas/novel.schema';
-import { validateSchema } from '../middlewares/schema-validator.middleware';
+import { validateSchema } from '../middlewares/validate-schema.middleware';
+import { validateToken } from '../middlewares/validate-token.middleware';
+import { validateRole } from '../middlewares/validate-role.middleware';
 
 const router = Router();
 
 router.get('/:id', validateSchema(novelIdParamSchema, 'params'), getNovelById);
 router.get('/search/title/:title', validateSchema(novelTitleParamSchema, 'params'), getNovelsByTitleMatch);
-router.get('/search/writer/:writerAccountId', validateSchema(writerAccountIdParamSchema, 'params'), getNovelsByWriterAccountId);
-router.post('/', validateSchema(createNovelSchema, 'body'), createNovel);
-router.put('/:id', validateSchema(novelIdParamSchema, 'params'), validateSchema(updateNovelSchema, 'body'), updateNovelById);
-router.delete('/:id', validateSchema(novelIdParamSchema, 'params'), deleteNovelById);
+router.get('/search/writer/:writerAccountId', validateToken, validateRole(['writer']), validateSchema(writerAccountIdParamSchema, 'params'), getNovelsByWriterAccountId);
+router.post('/', validateToken, validateRole(['writer']), validateSchema(createNovelSchema, 'body'), createNovel);
+router.put('/:id', validateToken, validateRole(['writer']), validateSchema(novelIdParamSchema, 'params'), validateSchema(updateNovelSchema, 'body'), updateNovelById);
+router.delete('/:id', validateToken, validateRole(['writer']), validateSchema(novelIdParamSchema, 'params'), deleteNovelById);
 
 export default router;
