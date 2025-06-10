@@ -9,9 +9,13 @@ import readingHistoryRoutes from './routes/reading-history.routes';
 import readingPreferencesSettingsRoutes from './routes/reading-preferences-settings.routes';
 import reviewRoutes from './routes/review.routes';
 
+import { errorHandler } from './middlewares/error-handler.middleware';
+import requestLogger from './utils/request-logger.util';
+
 const app = express();
 
 app.use(morgan('dev'));
+app.use(requestLogger);
 app.use(express.json());
 
 app.use('/api/chapter', chapterRoutes);
@@ -21,5 +25,8 @@ app.use('/api/novel', novelRoutes);
 app.use('/api/reading-history', readingHistoryRoutes);
 app.use('/api/reading-preferences-settings', readingPreferencesSettingsRoutes);
 app.use('/api/review', reviewRoutes);
+
+app.use(errorHandler);
+
 
 export default app;

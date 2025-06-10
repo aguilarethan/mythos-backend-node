@@ -1,82 +1,75 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import * as novelService from '../services/novel.service';
+import { CustomError } from '../utils/CustomError';
 
-export const getNovelById = async (req: Request, res: Response) => { 
+export const getNovelById = async (req: Request, res: Response, next: NextFunction) => { 
   try {
     const novel = await novelService.findNovelById(req.params.id);
     if (!novel) {
-      res.status(404).json({ message: 'No se encontró la novela' });
-      return;
+      throw new CustomError('No se encontró la novela', 404);
     }
     res.json(novel);
   } catch (error) {
-    console.error('Error fetching novel:', error);
-    res.status(500).json({ message: 'Ocurrió un error al intentar buscar la novela' });
+    next(error);
   }
 };
 
-export const getNovelsByTitleMatch = async (req: Request, res: Response) => {
+export const getNovelsByTitleMatch = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const foundNovels = await novelService.findNovelsByTitleMatch(req.params.title);
     if (foundNovels.length === 0) {
-      res.status(404).json({ message: 'No se encontraron novelas con titulos coincidentes' });
-      return;
+      throw new CustomError('No se encontraron novelas con ese título', 404);
     }
     res.json(foundNovels)
   } catch (error) {
-    console.error('Error fetching novels:', error);
-    res.status(500).json({ message: 'Ocurrió un error al intentar buscar las novelas' });
+    next(error);
   }
 };
 
-export const getNovelsByWriterAccountId = async (req: Request, res: Response) => {
+export const getNovelsByWriterAccountId = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const foundNovels = await novelService.findNovelsByWriterAccountId(req.params.writerAccountId);
     if (foundNovels.length === 0) {
-      res.status(404).json({ message: 'No se encontraron novelas para este escritor' });
-      return;
+      throw new CustomError('No se encontraron novelas para este escritor', 404);
     }
     res.json(foundNovels);
   } catch (error) {
-    console.error('Error fetching novels:', error);
-    res.status(500).json({ message: 'Ocurrió un error al intentar buscar las novelas' });
+    next(error);
   }
 };
 
-export const createNovel = async (req: Request, res: Response) => {
+export const createNovel = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const novel = await novelService.saveNovel(req.body);
+    if (!novel) {
+      throw new CustomError('No se pudo crear la novela', 400);
+    }
     res.status(201).json(novel);
   } catch (error) {
-    console.error('Error creating novel:', error);
-    res.status(500).json({ message: 'Ocurrió un error al intentar crear la novela' });
+    next(error);
   }
 };
 
-export const updateNovelById = async (req: Request, res: Response) => {
+export const updateNovelById = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const updatedNovel = await novelService.findNovelByIdAndUpdate(req.params.id, req.body);
     if (!updatedNovel) {
-      res.status(404).json({ message: 'No se encontró la novela' });
-      return;
+      throw new CustomError('No se encontró la novela para actualizar', 404);
     }
     res.json(updatedNovel);
   } catch (error) {
-    console.error('Error updating novel:', error);
-    res.status(500).json({ message: 'Ocurrió un error al intentar actualizar la novela' });
+    next(error);
   }
 };
 
-export const deleteNovelById = async (req: Request, res: Response) => {
+export const deleteNovelById = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const deletedNovel = await novelService.findNovelByIdAndDelete(req.params.id);
     if (!deletedNovel) {
-      res.status(404).json({ message: 'No se encontró la novela' });
-      return;
+      throw new CustomError('No se encontró la novela para eliminar', 404);
     }
     res.json({ message: 'Novela eliminada correctamente' });
   } catch (error) {
-    console.error('Error deleting novel:', error);
-    res.status(500).json({ message: 'Ocurrió un error al intentar eliminar la novela' });
+    next(error);
   }
 };
