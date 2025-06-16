@@ -1,5 +1,6 @@
 import { Types } from 'mongoose';
 import { IGenre } from './genre.interface';
+import { IImageData } from './image-data.interface';
 
 export enum NovelStatus {
     IN_PROGRESS = 'En curso',
@@ -16,8 +17,9 @@ export interface INovel {
     description: string;
     genres: (Types.ObjectId | IGenre)[];
     tags: string[];
-    coverImage?: string;
-    bannerImage?: string;
+    isPublic: boolean;
+    coverImage?: IImageData;
+    bannerImage?: IImageData;
     status: NovelStatus;
     createdAt?: Date;
     updatedAt?: Date;

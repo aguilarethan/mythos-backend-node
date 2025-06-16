@@ -4,6 +4,6 @@ import { config } from './config/config';
 
 connectDB();
 
-app.listen(3000, () => {
+app.listen(config.expressPort, () => {
     console.log(`Servidor corriendo en el puerto ${config.expressPort}`);
 });

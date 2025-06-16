@@ -18,13 +18,13 @@ app.use(morgan('dev'));
 app.use(requestLogger);
 app.use(express.json());
 
-app.use('/api/chapter', chapterRoutes);
-app.use('/api/comment', commentRoutes);
-app.use('/api/genre', genreRoutes);
-app.use('/api/novel', novelRoutes);
-app.use('/api/reading-history', readingHistoryRoutes);
+app.use('/api/chapters', chapterRoutes);
+app.use('/api/comments', commentRoutes);
+app.use('/api/genres', genreRoutes);
+app.use('/api/novels', novelRoutes);
+app.use('/api/reading-historys', readingHistoryRoutes);
 app.use('/api/reading-preferences-settings', readingPreferencesSettingsRoutes);
-app.use('/api/review', reviewRoutes);
+app.use('/api/reviews', reviewRoutes);
 
 app.use(errorHandler);
 
