@@ -1,5 +1,9 @@
 import express from 'express';
 import morgan from 'morgan';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+
+import { config } from './config/config';
 
 import chapterRoutes from './routes/chapter.routes';
 import commentRoutes from './routes/comment.routes';
@@ -16,7 +20,12 @@ const app = express();
 
 app.use(morgan('dev'));
 app.use(requestLogger);
+app.use(cors({
+    origin: config.nextClientOrigin,
+    credentials: true,
+}));
 app.use(express.json());
+app.use(cookieParser());
 
 app.use('/api/chapters', chapterRoutes);
 app.use('/api/comments', commentRoutes);

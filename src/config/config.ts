@@ -18,7 +18,8 @@ const requireEnvVar = (name: string): string => {
 export const config = {
     mongodbUri: requireEnvVar('MONGODB_URI'),
     jwtSecret: requireEnvVar('JWT_SECRET'),
-    expressPort: Number(process.env.EXPRESS_PORT) || 3000,
+    expressPort: Number(process.env.EXPRESS_PORT),
+    nextClientOrigin: process.env.NEXT_CLIENT_ORIGIN,
     environment: process.env.NODE_ENV || 'development',
 };
 

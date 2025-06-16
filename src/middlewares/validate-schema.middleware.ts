@@ -12,7 +12,7 @@ export const validateSchema = (
   if (!parsed.success) {
     res.status(400).json({
       errors: parsed.error.errors.map(error => ({
-        path: error.path.join('.'),
+        field: error.path.join('.'),
         message: error.message,
       })),
     });
