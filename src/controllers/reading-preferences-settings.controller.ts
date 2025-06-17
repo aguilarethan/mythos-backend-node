@@ -1,68 +1,34 @@
-import { Request, Response } from 'express';
-import { ReadingPreferencesSettingsModel } from '../models/reading-preferences-settings.model';
+import { Request, Response, NextFunction } from 'express';
+import * as preferencesService from '../services/reading-preferences-settings.service';
+import { CustomError } from '../utils/CustomError';
 
-export const getReadingPreferencesSettingsByAccountId = async (req: Request, res: Response) => {
-  const { accountId } = req.params;
-
+export const getReadingPreferencesSettingsByAccountId = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const settings = await ReadingPreferencesSettingsModel.findOne({ accountId });
-
-    if (!settings) {
-      res.status(404).json({ message: 'No se encontraron preferencias para esta cuenta' });
-    }
-
+    const settings = await preferencesService.findPreferencesByAccountId(req.params.accountId);
+    if (!settings) throw new CustomError('No se encontraron preferencias para esta cuenta', 404);
     res.json(settings);
   } catch (error) {
-    console.error('Error fetching settings:', error);
-    res.status(500).json({ message: 'Ocurrió un error al intentar obtener las preferencias' });
+    next(error);
   }
 };
 
-export const createReadingPreferencesSettings = async (req: Request, res: Response) => {
-  const { accountId, fontSize, fontFamily, lineSpacing, theme } = req.body;
-
+export const createReadingPreferencesSettings = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const existing = await ReadingPreferencesSettingsModel.findOne({ accountId });
-    if (existing) {
-      res.status(400).json({ message: 'Ya existen preferencias para esta cuenta' });
-    }
-
-    const newSettings = new ReadingPreferencesSettingsModel({
-      accountId,
-      fontSize,
-      fontFamily,
-      lineSpacing,
-      theme
-    });
-
-    const savedSettings = await newSettings.save();
-    res.json(savedSettings);
+    const existing = await preferencesService.findPreferencesByAccountId(req.body.accountId);
+    if (existing) throw new CustomError('Ya existen preferencias para esta cuenta', 400);
+    const created = await preferencesService.savePreferences(req.body);
+    res.status(201).json(created);
   } catch (error) {
-    console.error('Error creating settings:', error);
-    res.status(500).json({ message: 'Ocurrió un error al intentar crear las preferencias' });
+    next(error);
   }
 };
 
-export const updateReadingPreferencesSettingsByAccountId = async (req: Request, res: Response) => {
-  const { accountId } = req.params;
-  const { fontSize, fontFamily, lineSpacing, theme } = req.body;
-
+export const updateReadingPreferencesSettingsByAccountId = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const updatedSettings = await ReadingPreferencesSettingsModel.findOneAndUpdate(
-      { accountId },
-      { fontSize, fontFamily, lineSpacing, theme },
-      { new: true }
-    );
-
-    if (!updatedSettings) {
-      res.status(404).json({ message: 'No se encontraron preferencias para actualizar' });
-    }
-
-    res.json(updatedSettings);
+    const updated = await preferencesService.findPreferencesByAccountIdAndUpdate(req.params.accountId, req.body);
+    if (!updated) throw new CustomError('No se encontraron preferencias para actualizar', 404);
+    res.json(updated);
   } catch (error) {
-    console.error('Error updating settings:', error);
-    res.status(500).json({ message: 'Ocurrió un error al intentar actualizar las preferencias' });
+    next(error);
   }
 };
-
-
