@@ -1,8 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import * as novelService from '../services/novel.service';
 import { CustomError } from '../utils/CustomError';
+import { cloudinary } from '../config/cloudinary-config';
+import streamifier from 'streamifier';
 
-export const getNovelById = async (req: Request, res: Response, next: NextFunction) => { 
+export const getNovelById = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const novel = await novelService.findNovelById(req.params.id);
     if (!novel) {
@@ -38,13 +40,36 @@ export const getNovelsByWriterAccountId = async (req: Request, res: Response, ne
   }
 };
 
+export const uploadNovelCoverImage = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    if (req.file?.buffer) {
+      const stream = streamifier.createReadStream(req.file.buffer);
+
+      const uploadResult: any = await new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          { folder: 'novels-covers' },
+          (error, result) => {
+            if (error) return reject(error);
+            resolve(result);
+          }
+        );
+        stream.pipe(uploadStream);
+      });
+
+      res.json(uploadResult.secure_url );
+    }
+  } catch (error) {
+    next(error);
+  }
+}
+
 export const createNovel = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const novel = await novelService.saveNovel(req.body);
     if (!novel) {
       throw new CustomError('No se pudo crear la novela', 400);
     }
-    res.status(201).json(novel);
+    res.json(novel);
   } catch (error) {
     next(error);
   }

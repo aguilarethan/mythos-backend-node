@@ -19,7 +19,6 @@ export const validateToken = (req: Request, res: Response, next: NextFunction) =
             return;
         }
         
-        console.log('Token decodificado:', decoded);
         req.user = decoded as ITokenPayload;
         next();
     } catch (error) {

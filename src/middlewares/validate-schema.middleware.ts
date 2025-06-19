@@ -7,6 +7,7 @@ export const validateSchema = (
   schema: ZodSchema,
   target: ValidationTarget = "body"
 ) => (req: Request, res: Response, next: NextFunction) => {
+  console.log(req.body)
   const parsed = schema.safeParse(req[target]);
 
   if (!parsed.success) {
@@ -16,6 +17,7 @@ export const validateSchema = (
         message: error.message,
       })),
     });
+    return;
   }
 
   req[target] = parsed.data;
