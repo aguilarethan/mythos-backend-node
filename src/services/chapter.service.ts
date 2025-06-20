@@ -13,3 +13,7 @@ export const saveChapter = async (chapterData: IChapter) => {
     const newChapter = new ChapterModel({ ...chapterData, chapterNumber: nextChapterNumber });
     return newChapter.save();
 }
+
+export const findChaptersByNovelId = async (novelId: string) => {
+  return ChapterModel.find({ novelId }).sort({ chapterNumber: 1 }); // ordenados por número de capítulo ascendente
+};

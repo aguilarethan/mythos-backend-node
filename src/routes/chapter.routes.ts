@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import {
     createChapter,
+    getChaptersByNovel,
+    getChapterById,
 } from '../controllers/chapter.controller';
 import {
     createChapterSchema,
@@ -13,5 +15,8 @@ const router = Router();
 
 router.post('/', validateToken, validateRole(['writer']), validateSchema(createChapterSchema, 'body'), createChapter);
 
+router.get('/novel/:novelId', getChaptersByNovel);
+
+router.get('/:id', getChapterById);
 
 export default router;
