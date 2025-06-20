@@ -3,7 +3,7 @@ import { nonEmptyString } from "./utils/string-validations";
 import { mongoIdSchema } from "./common.schema";
 
 export const accountIdParamSchema = z.object({
-    accountId: mongoIdSchema,
+    accountId: z.string().uuid("El ID de cuenta debe ser un UUID válido"),
 });
 
 export const preferencesSchema = z.object({
