@@ -79,7 +79,7 @@ export const createNovel = async (req: Request, res: Response, next: NextFunctio
   try {
     const novel = await novelService.saveNovel(req.body);
     if (!novel) {
-      throw new CustomError('No se pudo crear la novela', 400);
+      throw new CustomError('No se pudo crear la novela', 500);
     }
     res.json(novel);
   } catch (error) {
