@@ -1,4 +1,4 @@
-import { Schema, model, Types, Document } from 'mongoose';
+import { Schema, model, Document } from 'mongoose';
 import { INovel, NovelStatus } from '../interfaces/novel.interface';
 
 export type NovelDocument = INovel & Document;

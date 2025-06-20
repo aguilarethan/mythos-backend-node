@@ -1,15 +1,15 @@
-import { Schema, model, Types, Document } from 'mongoose';
+import { Schema, model, Document } from 'mongoose';
 import { IChapter } from '../interfaces/chapter.interface';
 
 export type ChapterDocument = IChapter & Document;
 
 const chapterSchema = new Schema<ChapterDocument>({
     novelId: { type: Schema.Types.ObjectId, ref:'Novel', required: true },
-    volumeId: { type: Schema.Types.ObjectId, ref: 'Volume', required: true },
-    chapterNumber: { type: Number, min: 1, required: true },
+    volumeId: { type: Schema.Types.ObjectId, ref: 'Volume', default: null },
+    chapterNumber: { type: Number, min: 1 },
     title: { type: String, trim: true, required: true },
     content: { type: String, trim: true, required: true },
-    priceMythras: { type: Number, min: 0, required: true },
+    priceMythras: { type: Number, min: 0, default: 0, required: true },
 }, {
     timestamps: true,
     toJSON: {

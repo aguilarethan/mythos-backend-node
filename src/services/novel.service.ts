@@ -13,6 +13,10 @@ export const findNovelsByWriterAccountId = async (writerAccountId: string) => {
     return NovelModel.find({ writerAccountId });
 }
 
+export const findLastThreeNovelsPreview = async () => {
+    return NovelModel.find({}, { _id: 1, writerAccountId:1, title: 1, description: 1, coverImageUrl: 1 }).sort({ createdAt: -1 }).limit(3);
+}
+
 export const saveNovel = async (novelData: INovel) => {
     const newNovel = new NovelModel(novelData);
     return newNovel.save();

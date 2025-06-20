@@ -1,20 +1,21 @@
 import { Router } from 'express';
 import { uploadFile } from '../middlewares/upload-file.middleware';
-import { 
-    getNovelsByTitleMatch, 
-    getNovelById, 
+import {
+    getNovelsByTitleMatch,
+    getNovelById,
     getNovelsByWriterAccountId,
+    getLastThreeNovelsPreview,
     uploadNovelCoverImage,
-    createNovel, 
+    createNovel,
     updateNovelById,
-    deleteNovelById 
+    deleteNovelById
 } from '../controllers/novel.controller';
-import { 
-    novelIdParamSchema, 
+import {
+    novelIdParamSchema,
     novelTitleParamSchema,
     writerAccountIdParamSchema,
-    createNovelSchema, 
-    updateNovelSchema 
+    createNovelSchema,
+    updateNovelSchema
 } from '../schemas/novel.schema';
 import { validateSchema } from '../middlewares/validate-schema.middleware';
 import { validateToken } from '../middlewares/validate-token.middleware';
@@ -25,9 +26,10 @@ const router = Router();
 router.get('/:id', validateSchema(novelIdParamSchema, 'params'), getNovelById);
 router.get('/search/title/:title', validateSchema(novelTitleParamSchema, 'params'), getNovelsByTitleMatch);
 router.get('/search/writer/:writerAccountId', validateToken, validateRole(['writer']), validateSchema(writerAccountIdParamSchema, 'params'), getNovelsByWriterAccountId);
+router.get('/search/last-three-preview', getLastThreeNovelsPreview);
 
 router.post('/upload/cover-image', validateToken, validateRole(['writer']), uploadFile.single('coverImage'), uploadNovelCoverImage);
-router.post('/', validateToken, validateRole(['writer']), uploadFile.single('coverImage'), validateSchema(createNovelSchema, 'body'), createNovel);
+router.post('/', validateToken, validateRole(['writer']), validateSchema(createNovelSchema, 'body'), createNovel);
 
 router.put('/:id', validateToken, validateRole(['writer']), validateSchema(novelIdParamSchema, 'params'), validateSchema(updateNovelSchema, 'body'), updateNovelById);
 router.delete('/:id', validateToken, validateRole(['writer']), validateSchema(novelIdParamSchema, 'params'), deleteNovelById);

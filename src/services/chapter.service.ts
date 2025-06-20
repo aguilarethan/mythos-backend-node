@@ -5,19 +5,11 @@ export const findChapterById = async (id: string) => {
     return ChapterModel.findById(id);
 }
 
-export const findChaptersSummaryByNovelId = async (novelId: string) => {
-    return ChapterModel.find({ novelId }).select('volumeId chapterNumber title isFree createdAt ').sort({ chapterNumber: 1 });
-}
-
 export const saveChapter = async (chapterData: IChapter) => {
-    const newChapter = new ChapterModel(chapterData);
+
+    const lastChapter = await ChapterModel.findOne({ novelId: chapterData.novelId }, { chapterNumber: 1 }).sort({ chapterNumber: -1});
+    const nextChapterNumber = lastChapter?.chapterNumber ? lastChapter.chapterNumber + 1 : 1;
+
+    const newChapter = new ChapterModel({ ...chapterData, chapterNumber: nextChapterNumber });
     return newChapter.save();
-}
-
-export const findChapterByIdAndUpdate = async (id: string, updatedChapterData: Partial<IChapter>) => { 
-    return ChapterModel.findByIdAndUpdate(id, updatedChapterData, { new: true });
-}
-
-export const findChapterByIdAndDelete = async (id: string) => {
-    return ChapterModel.findByIdAndDelete(id);
 }

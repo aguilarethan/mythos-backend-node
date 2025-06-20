@@ -40,6 +40,18 @@ export const getNovelsByWriterAccountId = async (req: Request, res: Response, ne
   }
 };
 
+export const getLastThreeNovelsPreview = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const foundNovels = await novelService.findLastThreeNovelsPreview();
+    if (foundNovels.length === 0) {
+      throw new CustomError('No se encontraron novelas recientes', 404);
+    }
+    res.json(foundNovels);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const uploadNovelCoverImage = async (req: Request, res: Response, next: NextFunction) => {
   try {
     if (req.file?.buffer) {
