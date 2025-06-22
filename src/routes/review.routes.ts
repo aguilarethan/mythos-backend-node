@@ -1,16 +1,14 @@
 import { Router } from 'express';
 import {
-  getReviewsByNovelId,
-  createReview,
-  updateReviewById,
-  deleteReviewById
+    createReview,
 } from '../controllers/review.controller';
+
+import { validateSchema } from '../middlewares/validate-schema.middleware';
+import { validateToken } from '../middlewares/validate-token.middleware';
+import { validateRole } from '../middlewares/validate-role.middleware';
 
 const router = Router();
 
-router.get('/search/:novelId', getReviewsByNovelId);
-router.post('/', createReview);
-router.put('/:id', updateReviewById);
-router.delete('/:id', deleteReviewById);
+router.post('/', validateToken, validateRole(['reader', 'writer']), createReview);
 
 export default router;

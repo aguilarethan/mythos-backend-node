@@ -1,4 +1,4 @@
-import { Schema, model, Types, Document } from 'mongoose';
+import { Schema, model, Document } from 'mongoose';
 import { IReview } from '../interfaces/review.interface';
 
 export type ReviewDocument = IReview & Document;
@@ -9,19 +9,20 @@ const reviewSchema = new Schema<ReviewDocument>({
     rating: { type: Number, required: true },
     comment: { type: String, required: true },
     likes: { type: Number, default: 0 },
-    date: { type: Date, default: Date.now },
+}, {
+    timestamps: true,
+    toJSON: {
+        virtuals: true,
+        versionKey: false,
+        transform: (_, ret) => {
+            delete ret._id;
+            delete ret.__v;
+        }
+    }
 });
 
 reviewSchema.virtual('id').get(function() {
     return this._id.toHexString();
-});
-
-reviewSchema.set('toJSON', {
-    virtuals: true,
-    versionKey: false,
-    transform: (doc, ret) => {
-        delete ret._id;
-    }
 });
 
 export const ReviewModel = model<ReviewDocument>('Review', reviewSchema);
