@@ -14,3 +14,5 @@ const router = Router();
 
 router.post('/', validateToken, validateRole(['writer']), validateSchema(createChapterSchema, 'body'), createChapter);
 router.post('/generate-pdf', validateToken, generateChapterPDF);
+
+export default router;
