@@ -7,5 +7,6 @@ export interface IReview {
     rating: number;
     comment: string;
     likes: number;
-    date: Date;
+    createdAt?: Date;
+    updatedAt?: Date;
 }
