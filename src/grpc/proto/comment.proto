@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package comment;
+
+service CommentService {
+  rpc SaveComment (SaveCommentRequest) returns (CommentResponse);
+}
+
+message SaveCommentRequest {
+  string chapterId = 1;
+  string accountId = 2;
+  string message = 3;
+}
+
+message CommentResponse {
+  string id = 1;
+  string chapterId = 2;
+  string accountId = 3;
+  string message = 4;
+  int32 likes = 5;
+}
