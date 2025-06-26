@@ -2,8 +2,6 @@ import { Request, Response, NextFunction } from 'express';
 import * as chapterService from '../services/chapter.service';
 import { CustomError } from '../utils/CustomError';
 
-
-
 export const createChapter = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const chapter = await chapterService.saveChapter(req.body);
@@ -15,3 +13,21 @@ export const createChapter = async (req: Request, res: Response, next: NextFunct
         next(error);
     }
 }
+
+export const generateChapterPDF = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { chapterNumber, title, content } = req.body;
+
+    const pdfBuffer = await chapterService.generateChapterPDF(chapterNumber, title, content);
+
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': `attachment; filename="capitulo-${chapterNumber}.pdf"`,
+      'Content-Length': pdfBuffer.length,
+    });
+
+    res.send(pdfBuffer);
+  } catch (error) {
+    next(error);
+  }
+};

@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import {
     createChapter,
+    generateChapterPDF,
 } from '../controllers/chapter.controller';
 import {
     createChapterSchema,
@@ -12,6 +13,4 @@ import { validateRole } from '../middlewares/validate-role.middleware';
 const router = Router();
 
 router.post('/', validateToken, validateRole(['writer']), validateSchema(createChapterSchema, 'body'), createChapter);
-
-
-export default router;
+router.post('/generate-pdf', validateToken, generateChapterPDF);
