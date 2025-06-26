@@ -5,7 +5,8 @@ export interface IReply {
     accountId: string;
     message: string;
     likes: number;
-    date: Date;
+    createdAt?: Date;
+    updatedAt?: Date;
 }
 
 export interface IComment { 
@@ -15,5 +16,6 @@ export interface IComment {
     message: string;
     replies: IReply[];
     likes: number;
-    date: Date;
+    createdAt?: Date;
+    updatedAt?: Date;
 }
