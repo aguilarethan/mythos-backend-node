@@ -6,7 +6,7 @@ import cookieParser from 'cookie-parser';
 import { config } from './config/config';
 
 import chapterRoutes from './routes/chapter.routes';
-import commentRoutes from './routes/comment.routes';
+import commentRoutes from './routes/comment.routes'
 import genreRoutes from './routes/genre.routes';
 import novelReportRoutes from './routes/novel-report.routes';
 import novelRoutes from './routes/novel.routes';

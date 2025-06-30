@@ -52,6 +52,18 @@ export const getLastThreeNovelsPreview = async (req: Request, res: Response, nex
   }
 };
 
+export const getEightMostViewedNovelsPreview = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const foundNovels = await novelService.findEightMostViewedNovelsPreview();
+    if (foundNovels.length === 0) {
+      throw new CustomError('No se encontraron novelas más vistas', 404);
+    }
+    res.json(foundNovels);
+  } catch (error) {
+    next(error);
+  }
+}
+
 export const uploadNovelCoverImage = async (req: Request, res: Response, next: NextFunction) => {
   try {
     if (req.file?.buffer) {

@@ -2,7 +2,12 @@ import { NovelModel } from "../models/novel.model";
 import { INovel } from "../interfaces/novel.interface";
 
 export const findNovelById = async (id: string) => {
-    return NovelModel.findById(id);
+    const novel = await NovelModel.findById(id);
+    if (novel) {
+        novel.views += 1;
+        await novel.save();
+    }
+    return novel;
 }
 
 export const findNovelsByTitleMatch = async (title: string) => {
@@ -14,7 +19,11 @@ export const findNovelsByWriterAccountId = async (writerAccountId: string) => {
 }
 
 export const findLastThreeNovelsPreview = async () => {
-    return NovelModel.find({}, { _id: 1, writerAccountId:1, title: 1, description: 1, coverImageUrl: 1 }).sort({ createdAt: -1 }).limit(3);
+    return NovelModel.find({}, { _id: 1, writerAccountId: 1, title: 1, description: 1, coverImageUrl: 1 }).sort({ createdAt: -1 }).limit(3);
+}
+
+export const findEightMostViewedNovelsPreview = async () => {
+    return NovelModel.find({}, { _id: 1, writerAccountId: 1, title: 1, genres: 1, coverImageUrl: 1 }).sort({ views: -1 }).limit(8);
 }
 
 export const saveNovel = async (novelData: INovel) => {
@@ -22,7 +31,7 @@ export const saveNovel = async (novelData: INovel) => {
     return newNovel.save();
 }
 
-export const findNovelByIdAndUpdate = async (id: string, updatedNovelData: Partial<INovel>) => { 
+export const findNovelByIdAndUpdate = async (id: string, updatedNovelData: Partial<INovel>) => {
     return NovelModel.findByIdAndUpdate(id, updatedNovelData, { new: true });
 }
 
