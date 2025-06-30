@@ -6,6 +6,10 @@ export const findChapterById = async (id: string) => {
     return ChapterModel.findById(id);
 }
 
+export const findChaptersByNovelId = async (novelId: string) => {
+    return ChapterModel.find({ novelId }).sort({ chapterNumber: 1 });
+}
+
 export const saveChapter = async (chapterData: IChapter) => {
 
     const lastChapter = await ChapterModel.findOne({ novelId: chapterData.novelId }, { chapterNumber: 1 }).sort({ chapterNumber: -1});

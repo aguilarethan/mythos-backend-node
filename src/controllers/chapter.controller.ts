@@ -2,6 +2,30 @@ import { Request, Response, NextFunction } from 'express';
 import * as chapterService from '../services/chapter.service';
 import { CustomError } from '../utils/CustomError';
 
+export const getChapterById = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const chapter = await chapterService.findChapterById(req.params.id);
+        if (!chapter) {
+            throw new CustomError('Capítulo no encontrado', 404);
+        }
+        res.json(chapter);
+    } catch (error) {
+        next(error);
+    }
+}
+
+export const getChaptersByNovelId = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const foundChapters = await chapterService.findChaptersByNovelId(req.params.novelId);
+        if (!foundChapters || foundChapters.length === 0) {
+            throw new CustomError('No se encontraron capítulos para esta novela', 404);
+        }
+        res.json(foundChapters);
+    } catch (error) {
+        next(error);
+    }
+}
+
 export const createChapter = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const chapter = await chapterService.saveChapter(req.body);

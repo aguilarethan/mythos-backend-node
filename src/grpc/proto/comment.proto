@@ -4,6 +4,15 @@ package comment;
 
 service CommentService {
   rpc SaveComment (SaveCommentRequest) returns (CommentResponse);
+  rpc GetCommentsByChapterId (GetCommentsByChapterIdRequest) returns (CommentsResponse);
+  rpc SaveReply (SaveReplyRequest) returns (CommentResponse);
+}
+
+message Reply {
+  string id = 1;
+  string accountId = 2;
+  string message = 3;
+  int32 likes = 4;
 }
 
 message SaveCommentRequest {
@@ -17,5 +26,21 @@ message CommentResponse {
   string chapterId = 2;
   string accountId = 3;
   string message = 4;
+  repeated Reply replies = 6;
   int32 likes = 5;
 }
+
+message SaveReplyRequest {
+  string commentId = 1;
+  string accountId = 2;
+  string message = 3;
+}
+
+message GetCommentsByChapterIdRequest {
+  string chapterId = 1;
+}
+
+message CommentsResponse {
+  repeated CommentResponse comments = 1;
+}
+
