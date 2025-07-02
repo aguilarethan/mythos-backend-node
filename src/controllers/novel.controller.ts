@@ -40,6 +40,18 @@ export const getNovelsByWriterAccountId = async (req: Request, res: Response, ne
   }
 };
 
+export const getNovelsByGenre = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const foundNovels = await novelService.findNovelsByGenre(req.params.genre);
+    if (foundNovels.length === 0) {
+      throw new CustomError('No se encontraron novelas para este género', 404);
+    }
+    res.json(foundNovels);
+  } catch (error) {
+    next(error);
+  }
+}
+
 export const getLastThreeNovelsPreview = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const foundNovels = await novelService.findLastThreeNovelsPreview();

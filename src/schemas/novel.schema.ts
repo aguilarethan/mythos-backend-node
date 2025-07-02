@@ -18,6 +18,7 @@ export const writerAccountIdParamSchema = z.object({
 
 export const baseNovelSchema = z.object({
     writerAccountId: nonEmptyString("El id de la cuenta del escritor"),
+    writerName: nonEmptyString("El nombre del escritor"),
     title: nonEmptyString("El título de la novela"),
     description: nonEmptyString("La descripción de la novela"),
     genres: z.array(z.string()).nonempty({ message: "Debe existir al menos un género en la novela" }),

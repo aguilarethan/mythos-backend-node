@@ -5,9 +5,10 @@ export type NovelDocument = INovel & Document;
 
 const novelSchema = new Schema<NovelDocument>({
     writerAccountId: { type: String, required: true },
+    writerName: { type: String, trim: true, required: true },
     title: { type: String, trim: true, required: true },
     description: { type: String, trim: true, required: true },
-    genres: [{ type: [String], required: true }],
+    genres: { type: [String], required: true },
     tags: { type: [String], default: [] },
     views: { type: Number, default: 0 },
     isPublic: { type: Boolean, default: true },

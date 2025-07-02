@@ -4,6 +4,7 @@ import {
     getNovelsByTitleMatch,
     getNovelById,
     getNovelsByWriterAccountId,
+    getNovelsByGenre,
     getLastThreeNovelsPreview,
     getEightMostViewedNovelsPreview,
     uploadNovelCoverImage,
@@ -27,6 +28,7 @@ const router = Router();
 router.get('/:id', validateSchema(novelIdParamSchema, 'params'), getNovelById);
 router.get('/search/title/:title', validateSchema(novelTitleParamSchema, 'params'), getNovelsByTitleMatch);
 router.get('/search/writer/:writerAccountId', validateToken, validateRole(['writer']), validateSchema(writerAccountIdParamSchema, 'params'), getNovelsByWriterAccountId);
+router.get('/search/genre/:genre', getNovelsByGenre);
 router.get('/search/last-three-preview', getLastThreeNovelsPreview);
 router.get('/search/eight-most-viewed-preview', getEightMostViewedNovelsPreview);
 

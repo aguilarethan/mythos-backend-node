@@ -11,6 +11,7 @@ export enum NovelStatus {
 export interface INovel {
     _id?: Types.ObjectId;
     writerAccountId: string;
+    writerName: string;
     title: string;
     description: string;
     genres: string[];
