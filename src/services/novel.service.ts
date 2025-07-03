@@ -11,20 +11,20 @@ export const findNovelById = async (id: string) => {
 }
 
 export const findNovelsByTitleMatch = async (title: string) => {
-    return NovelModel.find({ title: { $regex: title, $options: 'i' } });
+    return NovelModel.find({ title: { $regex: title, $options: 'i' } }, { _id: 1, writerAccountId: 1, writerName: 1, title: 1, genres: 1, coverImageUrl: 1 }).sort({ createdAt: -1 });
 }
 
 export const findNovelsByWriterAccountId = async (writerAccountId: string) => {
-    return NovelModel.find({ writerAccountId });
+    return NovelModel.find({ writerAccountId }, { _id: 1, title: 1, coverImageUrl: 1, genres: 1}).sort({ createdAt: -1 });
 }
 
 export const findNovelsByGenre = async (genre: string) => {
-    return NovelModel.find({ genres: { $in: [genre] } });
+    return NovelModel.find({ genres: genre }, { _id: 1, writerAccountId: 1, writerName: 1, title: 1, coverImageUrl: 1, genres: 1, }).sort({ createdAt: -1 });
 }
 
 
 export const findLastThreeNovelsPreview = async () => {
-    return NovelModel.find({}, { _id: 1, writerAccountId: 1, title: 1, description: 1, coverImageUrl: 1 }).sort({ createdAt: -1 }).limit(3);
+    return NovelModel.find({}, { _id: 1, writerAccountId: 1, writerName: 1, title: 1, description: 1, coverImageUrl: 1 }).sort({ createdAt: -1 }).limit(3);
 }
 
 export const findEightMostViewedNovelsPreview = async () => {

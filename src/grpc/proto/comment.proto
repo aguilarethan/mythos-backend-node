@@ -13,27 +13,31 @@ message Reply {
   string accountId = 2;
   string message = 3;
   int32 likes = 4;
+  string username = 5;
 }
 
 message SaveCommentRequest {
   string chapterId = 1;
   string accountId = 2;
   string message = 3;
+  string username = 4;
 }
 
 message CommentResponse {
   string id = 1;
   string chapterId = 2;
   string accountId = 3;
-  string message = 4;
+  string username = 4;
+  string message = 5;
   repeated Reply replies = 6;
-  int32 likes = 5;
+  int32 likes = 7;
 }
 
 message SaveReplyRequest {
   string commentId = 1;
   string accountId = 2;
   string message = 3;
+  string username = 4;
 }
 
 message GetCommentsByChapterIdRequest {

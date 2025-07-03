@@ -19,6 +19,7 @@ export const replyIdParamSchema = z.object({
 export const baseCommentSchema = z.object({
   chapterId: mongoIdSchema,
   accountId: nonEmptyString("El id de la cuenta"),
+  username: nonEmptyString("El nombre de usuario"),
   message: nonEmptyString("El mensaje del comentario"),
   replies: z.array(z.object({
     accountId: nonEmptyString("El id de la cuenta"),
@@ -34,6 +35,7 @@ export const baseCommentSchema = z.object({
 export const createCommentSchema = baseCommentSchema.pick({
   chapterId: true,
   accountId: true,
+  username: true,
   message: true,
 });
 

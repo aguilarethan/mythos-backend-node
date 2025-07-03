@@ -5,6 +5,7 @@ export type CommentDocument = IComment & Document;
 
 const replySchema = new Schema<IReply>({
     accountId: { type: String, required: true },
+    username: { type: String, required: true },
     message: { type: String, required: true },
     likes: { type: Number, default: 0 },
 }, {
@@ -22,6 +23,7 @@ const replySchema = new Schema<IReply>({
 const commentSchema = new Schema<CommentDocument>({
     chapterId: { type: Schema.Types.ObjectId, ref: 'Chapter', required: true },
     accountId: { type: String, required: true },
+    username: { type: String, required: true },
     message: { type: String, required: true },
     replies: { type: [replySchema], default: [] },
     likes: { type: Number, default: 0 },

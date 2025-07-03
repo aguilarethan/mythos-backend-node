@@ -3,6 +3,7 @@ import { Types } from "mongoose";
 export interface IReply {
     _id?: Types.ObjectId;
     accountId: string;
+    username: string;
     message: string;
     likes: number;
     createdAt?: Date;
@@ -13,6 +14,7 @@ export interface IComment {
     _id?: Types.ObjectId;
     chapterId: Types.ObjectId;
     accountId: string;
+    username: string; 
     message: string;
     replies: IReply[];
     likes: number;

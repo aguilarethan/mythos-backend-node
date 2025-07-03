@@ -6,6 +6,7 @@ export type ReviewDocument = IReview & Document;
 const reviewSchema = new Schema<ReviewDocument>({
     novelId: { type: Schema.Types.ObjectId, ref: 'Novel', required: true },
     accountId: { type: String, required: true },
+    username: { type: String, required: true },
     rating: { type: Number, required: true },
     comment: { type: String, required: true },
     likes: { type: Number, default: 0 },

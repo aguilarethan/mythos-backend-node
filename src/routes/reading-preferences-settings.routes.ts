@@ -11,8 +11,8 @@ import { validateRole } from '../middlewares/validate-role.middleware';
 
 const router = Router();
 
-router.get('/:accountId', validateToken, validateRole(['reader']), validateSchema(accountIdParamSchema, 'params'), getReadingPreferencesSettingsByAccountId);
-router.post('/', validateToken, validateRole(['reader']), validateSchema(preferencesSchema, 'body'), createReadingPreferencesSettings);
-router.put('/:accountId', validateToken, validateRole(['reader']), validateSchema(accountIdParamSchema, 'params'), validateSchema(updatePreferencesSchema, 'body'), updateReadingPreferencesSettingsByAccountId);
+router.get('/:accountId', validateToken, validateRole(['reader', 'writer']), validateSchema(accountIdParamSchema, 'params'), getReadingPreferencesSettingsByAccountId);
+router.post('/', validateToken, validateRole(['reader', 'writer']), validateSchema(preferencesSchema, 'body'), createReadingPreferencesSettings);
+router.put('/:accountId', validateToken, validateRole(['reader', 'writer']), validateSchema(accountIdParamSchema, 'params'), validateSchema(updatePreferencesSchema, 'body'), updateReadingPreferencesSettingsByAccountId);
 
 export default router;

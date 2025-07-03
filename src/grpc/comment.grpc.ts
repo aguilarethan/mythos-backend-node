@@ -3,12 +3,13 @@ import * as grpc from "@grpc/grpc-js";
 
 export const commentHandlers = {
     SaveComment: async (call: grpc.ServerUnaryCall<any, any>, callback: grpc.sendUnaryData<any>) => {
-        const { chapterId, accountId, message } = call.request;
+        const { chapterId, accountId, message, username } = call.request;
 
         try {
             const comment = await saveComment({
                 chapterId,
                 accountId,
+                username,
                 message,
                 replies: [],
                 likes: 0,
@@ -18,6 +19,7 @@ export const commentHandlers = {
                 id: comment._id.toString(),
                 chapterId: comment.chapterId.toString(),
                 accountId: comment.accountId,
+                username: comment.username,
                 message: comment.message,
                 likes: comment.likes,
             });
@@ -44,10 +46,12 @@ export const commentHandlers = {
                 id: comment._id.toString(),
                 chapterId: comment.chapterId.toString(),
                 accountId: comment.accountId,
+                username: comment.username,
                 message: comment.message,
                 replies: comment.replies.map(reply => ({
                     id: reply._id?.toString() ?? '',
                     accountId: reply.accountId,
+                    username: reply.username,
                     message: reply.message,
                     likes: reply.likes,
                 })),
@@ -69,12 +73,12 @@ export const commentHandlers = {
     },
 
     SaveReply: async (call: grpc.ServerUnaryCall<any, any>, callback: grpc.sendUnaryData<any>) => {
-        const { commentId, accountId, message } = call.request;
+        const { commentId, accountId, message, username } = call.request;
 
         try {
-            const { commentId } = call.request;
             const comment = await saveReply(commentId, {
                 accountId,
+                username,
                 message,
                 likes: 0,
             });
@@ -91,10 +95,12 @@ export const commentHandlers = {
                 id: comment._id.toString(),
                 chapterId: comment.chapterId.toString(),
                 accountId: comment.accountId,
+                username: comment.username,
                 message: comment.message,
                 replies: comment.replies.map(reply => ({
                     id: reply._id?.toString() ?? '',
                     accountId: reply.accountId,
+                    username: reply.username,
                     message: reply.message,
                     likes: reply.likes,
                 })),

@@ -28,9 +28,10 @@ router.post(
   validateToken,
   validateSchema(createCommentSchema, 'body'),
   (req, res) => {
-    const { chapterId, accountId, message } = req.body;
+    const { chapterId, accountId, message, username } = req.body;
+    console.log('Datos del comentario:', { chapterId, accountId, message, username });
 
-    grpcClient.SaveComment({ chapterId, accountId, message }, (err: any, response: any) => {
+    grpcClient.SaveComment({ chapterId, accountId, message, username }, (err: any, response: any) => {
       if (err) {
         console.error('Error al guardar comentario vía gRPC:', err);
         res.status(500).json({ error: 'Error al guardar el comentario' });
@@ -44,11 +45,12 @@ router.post(
 
 router.post(
   '/reply/:commentId',
+  validateToken,
   (req, res) => {
     const { commentId } = req.params;
-    const { accountId, message } = req.body;
+    const { accountId, message, username } = req.body;
 
-    grpcClient.SaveReply({ commentId, accountId, message }, (err: any, response: any) => {
+    grpcClient.SaveReply({ commentId, accountId, message, username }, (err: any, response: any) => {
       if (err) {
         console.error('Error al guardar respuesta vía gRPC:', err);
         res.status(500).json({ error: 'Error al guardar la respuesta' });
