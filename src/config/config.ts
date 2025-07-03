@@ -1,11 +1,19 @@
 import dotenv from 'dotenv';
 import path from 'path';
+import fs from 'fs';
 
-const envFile = `.env.${process.env.NODE_ENV || 'development'}`;
+const baseEnvPath = path.resolve(process.cwd(), '.env');
+if (fs.existsSync(baseEnvPath)) {
+    dotenv.config({ path: baseEnvPath });
+}
 
-dotenv.config({
-    path: path.resolve(process.cwd(), envFile),
-});
+const nodeEnv = process.env.NODE_ENV || 'development';
+if (nodeEnv !== 'production') {
+    const envFilePath = path.resolve(process.cwd(), `.env.${nodeEnv}`);
+    if (fs.existsSync(envFilePath)) {
+        dotenv.config({ path: envFilePath, override: true });
+    }
+}
 
 const requireEnvVar = (name: string): string => {
     const value = process.env[name];
@@ -18,10 +26,10 @@ const requireEnvVar = (name: string): string => {
 export const config = {
     mongodbUri: requireEnvVar('MONGODB_URI'),
     jwtSecret: requireEnvVar('JWT_SECRET'),
+    nextClientOrigin: requireEnvVar('NEXT_CLIENT_ORIGIN'),
+    dotnetClientOrigin: requireEnvVar('DOTNET_CLIENT_ORIGIN'),
     expressPort: Number(process.env.EXPRESS_PORT),
-    grpcPort: String(process.env.GRPC_PORT), // Default to 50051 if not set
-    nextClientOrigin: process.env.NEXT_CLIENT_ORIGIN,
-    dotnetClientOrigin: process.env.DOTNET_CLIENT_ORIGIN,
+    grpcPort: String(process.env.GRPC_PORT), 
     environment: process.env.NODE_ENV || 'development',
 };
 

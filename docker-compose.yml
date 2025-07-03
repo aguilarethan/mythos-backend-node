@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  backend:
+    build: .
+    container_name: mythos-backend-node
+    ports:
+      - "3001:3001"
+    depends_on:
+      - mongodb
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - .env
+    restart: always
+
+  mongodb:
+    image: mongo:6
+    container_name: mythos-mongodb
+    volumes:
+      - mongo_data:/data/db
+    restart: always
+
+volumes:
+  mongo_data:
