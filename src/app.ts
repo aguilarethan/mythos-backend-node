@@ -22,7 +22,7 @@ const app = express();
 app.use(morgan('dev'));
 app.use(requestLogger);
 app.use(cors({
-    origin: config.nextClientOrigin,
+    origin: [config.nextClientOrigin, config.dotnetClientOrigin],
     credentials: true,
 }));
 app.use(express.json());
