@@ -19,7 +19,9 @@ export const config = {
     mongodbUri: requireEnvVar('MONGODB_URI'),
     jwtSecret: requireEnvVar('JWT_SECRET'),
     expressPort: Number(process.env.EXPRESS_PORT),
+    grpcPort: String(process.env.GRPC_PORT), // Default to 50051 if not set
     nextClientOrigin: process.env.NEXT_CLIENT_ORIGIN,
+    dotnetClientOrigin: process.env.DOTNET_CLIENT_ORIGIN,
     environment: process.env.NODE_ENV || 'development',
 };
 
