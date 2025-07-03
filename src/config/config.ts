@@ -20,6 +20,7 @@ export const config = {
     jwtSecret: requireEnvVar('JWT_SECRET'),
     expressPort: Number(process.env.EXPRESS_PORT),
     nextClientOrigin: process.env.NEXT_CLIENT_ORIGIN,
+    dotnetClientOrigin: process.env.DOTNET_CLIENT_ORIGIN,
     environment: process.env.NODE_ENV || 'development',
 };
 
