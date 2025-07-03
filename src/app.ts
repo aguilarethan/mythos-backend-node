@@ -22,7 +22,7 @@ const app = express();
 app.use(morgan('dev'));
 app.use(requestLogger);
 app.use(cors({
-    origin: [config.nextClientOrigin, config.dotnetClientOrigin],
+    origin: true,
     credentials: true,
 }));
 app.use(express.json());
@@ -38,6 +38,6 @@ app.use('/api/reading-preferences-settings', readingPreferencesSettingsRoutes);
 app.use('/api/reviews', reviewRoutes);
 
 app.use(errorHandler);
-
+//[config.nextClientOrigin, config.dotnetClientOrigin]
 
 export default app;
