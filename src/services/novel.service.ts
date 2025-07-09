@@ -15,7 +15,7 @@ export const findNovelsByTitleMatch = async (title: string) => {
 }
 
 export const findNovelsByWriterAccountId = async (writerAccountId: string) => {
-    return NovelModel.find({ writerAccountId }, { _id: 1, title: 1, coverImageUrl: 1, genres: 1}).sort({ createdAt: -1 });
+    return NovelModel.find({ writerAccountId }, { _id: 1, writerAccountId: 1, title: 1, coverImageUrl: 1, genres: 1}).sort({ createdAt: -1 });
 }
 
 export const findNovelsByGenre = async (genre: string) => {
