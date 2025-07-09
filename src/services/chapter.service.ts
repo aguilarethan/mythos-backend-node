@@ -19,6 +19,12 @@ export const saveChapter = async (chapterData: IChapter) => {
     return newChapter.save();
 }
 
+export const updateChapter = async (id: string, updateData: Partial<IChapter>) => {
+  delete updateData.novelId;
+  delete updateData.chapterNumber; 
+  return ChapterModel.findByIdAndUpdate(id, updateData, { new: true});
+}
+
 export const generateChapterPDF = async (chapterNumber: number, title: string, content: string) => {
   const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();

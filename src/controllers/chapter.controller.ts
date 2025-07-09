@@ -55,3 +55,20 @@ export const generateChapterPDF = async (req: Request, res: Response, next: Next
     next(error);
   }
 };
+
+export const updateChapter = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { id } = req.params;
+        const data = req.body; 
+        
+        const updatedChapter = await chapterService.updateChapter(id, data);
+
+        if (!updatedChapter) {
+            throw new CustomError('Capitulo no encontrado', 404);
+        }
+
+        res.json(updatedChapter);
+    } catch (error) {
+        next(error);
+    }
+}
