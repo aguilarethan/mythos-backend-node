@@ -10,7 +10,8 @@ import {
     uploadNovelCoverImage,
     createNovel,
     updateNovelById,
-    deleteNovelById
+    deleteNovelById,
+    getAuthorNovelStats
 } from '../controllers/novel.controller';
 import {
     novelIdParamSchema,
@@ -34,6 +35,8 @@ router.get('/search/eight-most-viewed-preview', getEightMostViewedNovelsPreview)
 
 router.post('/upload/cover-image', validateToken, validateRole(['writer']), uploadFile.single('coverImage'), uploadNovelCoverImage);
 router.post('/', validateToken, validateRole(['writer']), validateSchema(createNovelSchema, 'body'), createNovel);
+router.post('/author/chapters/stats', validateToken, validateRole(['writer']), getAuthorNovelStats);
+
 
 router.put('/:id', validateToken, validateRole(['writer']), validateSchema(novelIdParamSchema, 'params'), validateSchema(updateNovelSchema, 'body'), updateNovelById);
 router.delete('/:id', validateToken, validateRole(['writer']), validateSchema(novelIdParamSchema, 'params'), deleteNovelById);
