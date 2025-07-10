@@ -134,3 +134,19 @@ export const deleteNovelById = async (req: Request, res: Response, next: NextFun
     next(error);
   }
 };
+
+export const getAllNovelStats = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { contentStats } = req.body;
+    console.log(contentStats)
+
+    if (!Array.isArray(contentStats)) {
+      throw new CustomError('Parámetros inválidos', 400);
+    }
+
+    const response = await novelService.getAllNovelStats(contentStats);
+    res.json(response);
+  } catch (error) {
+    next(error);
+  }
+};
